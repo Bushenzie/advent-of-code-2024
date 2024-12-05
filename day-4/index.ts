@@ -105,9 +105,75 @@ const solve = async () => {
 
   const partTwo = (data: string) => {
     const lines = formatInput(data);
+
+    let sum = 0;
+    for (let i = 0; i < lines.length; i++) {
+      for (let x = 0; x < lines[i].length; x++) {
+        /*
+          M . M
+          . A .
+          S . S
+        */
+        if (
+          lines?.[i]?.[x] === "A" &&
+          lines?.[i - 1]?.[x - 1] === "M" &&
+          lines?.[i + 1]?.[x + 1] === "S" &&
+          lines?.[i - 1]?.[x + 1] === "M" &&
+          lines?.[i + 1]?.[x - 1] === "S"
+        ) {
+          sum++;
+        }
+
+        /*
+          S . M
+          . A .
+          S . M
+        */
+        if (
+          lines?.[i]?.[x] === "A" &&
+          lines?.[i - 1]?.[x - 1] === "S" &&
+          lines?.[i - 1]?.[x + 1] === "M" &&
+          lines?.[i + 1]?.[x + 1] === "M" &&
+          lines?.[i + 1]?.[x - 1] === "S"
+        ) {
+          sum++;
+        }
+
+        /*
+          S . S
+          . A .
+          M . M
+        */
+        if (
+          lines?.[i]?.[x] === "A" &&
+          lines?.[i - 1]?.[x - 1] === "S" &&
+          lines?.[i + 1]?.[x + 1] === "M" &&
+          lines?.[i - 1]?.[x + 1] === "S" &&
+          lines?.[i + 1]?.[x - 1] === "M"
+        ) {
+          sum++;
+        }
+
+        /*
+          M . S
+          . A .
+          M . S
+        */
+        if (
+          lines?.[i]?.[x] === "A" &&
+          lines?.[i - 1]?.[x - 1] === "M" &&
+          lines?.[i + 1]?.[x + 1] === "S" &&
+          lines?.[i - 1]?.[x + 1] === "S" &&
+          lines?.[i + 1]?.[x - 1] === "M"
+        ) {
+          sum++;
+        }
+      }
+    }
+
     console.log("Part 2:");
-    console.log("Not yet implemented");
-    return null;
+    console.log(sum);
+    return sum;
   };
 
   partOne(data);
