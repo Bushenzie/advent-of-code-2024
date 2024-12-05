@@ -1,6 +1,8 @@
 import { readTextFile } from "../utils/read"
 import {join} from "path";
 
+type LevelType = "increase" | "decrease";
+
 const solve = async () => {
     const path = join(process.cwd(),"day-2","./input.txt")
     const data = await readTextFile(path)
@@ -16,24 +18,30 @@ const solve = async () => {
         const MIN_DIFFER = 1;
         const MAX_DIFFER = 3;
 
-        let safeReportCount = 0;
+        let safeReports = levels
+            .filter((level) => {
+                let prevVal = level[0];
+                let isSafe = true;
+                let levelType: LevelType = level[0] > level[level.length-1] ? "decrease" : "increase";
+                
+                level.forEach((currVal,index) => {
+                    if(index === 0) return;
 
-        levels.forEach((level,index) => {
-            let isSafe = true;
-            let isDecreasingType = level[0] > level[1];
+                    let difference = 0;
 
-            level.reduce((prevVal,currVal) => {
-                const difference = isDecreasingType ? prevVal - currVal : currVal - prevVal;
-                const isValid = difference <= MAX_DIFFER && difference >= MIN_DIFFER;
-                if(!isValid && isSafe) isSafe = false
-                return currVal;
+                    if(levelType === "decrease") difference = prevVal - currVal;
+                    else difference = currVal - prevVal;
+
+                    const isValid = difference <= MAX_DIFFER && difference >= MIN_DIFFER;
+                    if(!isValid && isSafe) isSafe = false
+                    prevVal = currVal;
+                })
+                return isSafe;
             })
-            safeReportCount += isSafe ? 1 : 0;
-        })
 
         console.log("Part 1:")
-        console.log(safeReportCount)
-        return safeReportCount;
+        console.log(safeReports.length)
+        return safeReports.length;
     }
 
     const partTwo = (data: string) => {
@@ -41,16 +49,47 @@ const solve = async () => {
         const MIN_DIFFER = 1;
         const MAX_DIFFER = 3;
 
-        let safeReportCount = 0;
+        //I am not proud of this solution at all
+        let safeReports = levels
+            .filter((level) => {
 
-        levels.forEach((level,index) => {
-            let isSafe = true;
-            // TODO
-        })
+                const isSolvable = (level: number[]) => {
+                    let prevVal = level[0];
+                    let isSafe = true;
+                    let levelType: LevelType = level[0] > level[level.length-1] ? "decrease" : "increase";
+                    
+                    level.forEach((currVal,index) => {
+                        if(index === 0) return;
+    
+                        let difference = 0;
+    
+                        if(levelType === "decrease") difference = prevVal - currVal;
+                        else difference = currVal - prevVal;
+    
+                        const isValid = difference <= MAX_DIFFER && difference >= MIN_DIFFER;
+                        if(!isValid && isSafe) {
+                            isSafe = false
+                        }
+                        prevVal = currVal;
+                    })
+
+                    return isSafe;
+                }
+
+                let badLevels = isSolvable(level) ? 0 : 1;
+
+                for(let i = 0; i < level.length; i++) {
+                    const levelCopy = [...level];
+                    levelCopy.splice(i,1);
+                    badLevels += !isSolvable(levelCopy) ? 1 : 0;
+                }
+
+                return badLevels !== level.length+1;
+            })
 
         console.log("Part 2:")
-        console.log("Not yet implemented")
-        return null;
+        console.log(safeReports.length)
+        return safeReports.length;
     }
 
     partOne(data)
