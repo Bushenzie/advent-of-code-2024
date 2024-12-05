@@ -16,6 +16,8 @@ const solve = async () => {
     let sum = 0;
     for (let i = 0; i < lines.length; i++) {
       for (let x = 0; x < lines[i].length; x++) {
+        //TODO Should use parrent instead of hardcoding this check
+
         // Horizontally
         if (
           lines?.[i]?.[x] === "X" &&
@@ -106,6 +108,7 @@ const solve = async () => {
   const partTwo = (data: string) => {
     const lines = formatInput(data);
 
+    //TODO Should use parrent instead of hardcoding this check
     let sum = 0;
     for (let i = 0; i < lines.length; i++) {
       for (let x = 0; x < lines[i].length; x++) {

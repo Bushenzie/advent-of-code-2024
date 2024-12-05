@@ -26,10 +26,7 @@ const solve = async () => {
       level.forEach((currVal, index) => {
         if (index === 0) return;
 
-        let difference = 0;
-
-        if (levelType === "decrease") difference = prevVal - currVal;
-        else difference = currVal - prevVal;
+        let difference = levelType === "decrease" ? prevVal - currVal : currVal - prevVal;
 
         const isValid = difference <= MAX_DIFFER && difference >= MIN_DIFFER;
         if (!isValid && isSafe) isSafe = false;
@@ -58,10 +55,7 @@ const solve = async () => {
         level.forEach((currVal, index) => {
           if (index === 0) return;
 
-          let difference = 0;
-
-          if (levelType === "decrease") difference = prevVal - currVal;
-          else difference = currVal - prevVal;
+          let difference = levelType === "decrease" ? prevVal - currVal : currVal - prevVal;
 
           const isValid = difference <= MAX_DIFFER && difference >= MIN_DIFFER;
           if (!isValid && isSafe) {
